@@ -1,0 +1,83 @@
+Last login: Thu Feb  6 15:30:13 on ttys002
+cris@Cristians-MacBook-Pro ~ % cd sample-express
+cris@Cristians-MacBook-Pro sample-express % ls
+custom.d.ts		package.json		routes.ts
+index.js		public			sample-express
+index.ts		route.js		tsconfig.json
+node_modules		route.ts		weather.html
+package-lock.json	routes.js
+cris@Cristians-MacBook-Pro sample-express % cd
+cris@Cristians-MacBook-Pro ~ % cd sample-express
+cris@Cristians-MacBook-Pro sample-express % cd public
+cris@Cristians-MacBook-Pro public % ls
+weather.html
+cris@Cristians-MacBook-Pro public % cat weather.html
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="UTF-8" />
+	<title>Weather Component</title>
+	<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    </head>
+    <body>
+	<div id="root"></div>
+
+	<script type="text/babel">
+	    function App() {
+
+		const WeatherComponent = (props) => {
+
+		const [count, setCount] = React.useState(0);
+		React.useEffect(() => {
+		  setCount(1);
+		}, []);
+
+		return (
+		    <h1 onClick={() => setCount(count + 1)}>
+			The weather is {props.weather},
+			and the counter shows {count}
+		    </h1>
+		);
+	  };
+	  return (<WeatherComponent weather="sunny" />);
+	}
+
+	const container = document.getElementById("root");
+	const root = ReactDOM.createRoot(container);
+	root.render(<App />);
+    </script>
+  </body>
+</html>
+cris@Cristians-MacBook-Pro public % cd
+cris@Cristians-MacBook-Pro ~ % cd sample-express
+cris@Cristians-MacBook-Pro sample-express % cat index.ts
+import { routeHello, routeAPINames, routeWeather } from "./routes.js";
+import express, { Request, Response } from "express";
+
+import path from "path";
+
+const server = express();
+const port = 3000;
+
+server.get("/components/weather", function (req: Request, res: Response): void {
+	const filePath = path.join(process.cwd(), "public", "weather.html");
+	res.setHeader("Content-Type", "text/html");
+	res.sendFile(filePath);
+});
+
+server.listen(port, function (): void {
+	console.log("Listening on " + port);
+}); 
+cris@Cristians-MacBook-Pro sample-express % npx ts
+Need to install the following packages:
+ts@0.2.2
+Ok to proceed? (y) n
+
+npm error canceled
+npm error A complete log of this run can be found in: /Users/cris/.npm/_logs/2025-02-06T21_42_19_435Z-debug-0.log
+cris@Cristians-MacBook-Pro sample-express % npx tsc
+cris@Cristians-MacBook-Pro sample-express % node index.js
+Listening on 3000
+
